@@ -1,9 +1,323 @@
-<html>
-    <head>
-        <title>My Portfolio</title>
-    </head>
-    <body>
-        <h1>Hello! Im a budding software engineer.</h1>\
-        <p>This is my first webpage using Git.</p>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Web Profile</title>
+  <meta name="description" content="A colorful animated web profile page with a projects section." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg1: #6a00f4;
+      --bg2: #00d4ff;
+      --bg3: #ff5b84;
+      --glass: rgba(255, 255, 255, 0.14);
+      --border: rgba(255, 255, 255, 0.18);
+      --text: #f7f8fc;
+      --muted: #d8dcff;
+      --accent: #00ffd0;
+      --shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif;
+      color: var(--text);
+      background: #0b1020;
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient backdrop */
+    .animated-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background: radial-gradient(1200px 900px at 10% 20%, rgba(255, 94, 158,.25), transparent 60%),
+                  radial-gradient(900px 700px at 90% 10%, rgba(0, 212, 255,.25), transparent 60%),
+                  radial-gradient(1000px 800px at 50% 100%, rgba(106, 0, 244,.25), transparent 60%),
+                  linear-gradient(120deg, #0a0f1f 0%, #0d0f23 40%, #0a0e1e 100%);
+    }
+
+    /* Floating blobby layers */
+    .blob, .blob2, .blob3 {
+      position: fixed;
+      width: 60vmax;
+      height: 60vmax;
+      filter: blur(60px);
+      opacity: 0.35;
+      border-radius: 45% 55% 60% 40% / 55% 40% 60% 45%;
+      z-index: -2;
+      mix-blend-mode: screen;
+      will-change: transform, border-radius;
+    }
+    .blob { background: radial-gradient(circle at 30% 30%, var(--bg2), transparent 60%); top: -10vmax; left: -10vmax; animation: drift 18s ease-in-out infinite; }
+    .blob2 { background: radial-gradient(circle at 70% 40%, var(--bg1), transparent 60%); bottom: -12vmax; right: -8vmax; animation: drift2 24s ease-in-out infinite; }
+    .blob3 { background: radial-gradient(circle at 40% 70%, var(--bg3), transparent 60%); top: 20vmax; right: -14vmax; animation: drift3 28s ease-in-out infinite; }
+
+    @keyframes drift {
+      0%,100% { transform: translate3d(0,0,0) rotate(0deg); }
+      50% { transform: translate3d(3vmax, -2vmax, 0) rotate(15deg); }
+    }
+    @keyframes drift2 {
+      0%,100% { transform: translate3d(0,0,0) rotate(0deg); }
+      50% { transform: translate3d(-4vmax, 3vmax, 0) rotate(-12deg); }
+    }
+    @keyframes drift3 {
+      0%,100% { transform: translate3d(0,0,0) rotate(0deg); }
+      50% { transform: translate3d(-2vmax, -3vmax, 0) rotate(18deg); }
+    }
+
+    /* Gentle particle twinkles */
+    .stars {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background-image: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.35) 40%, transparent 42%),
+                        radial-gradient(1.5px 1.5px at 70% 20%, rgba(255,255,255,.25) 40%, transparent 42%),
+                        radial-gradient(1.7px 1.7px at 85% 70%, rgba(255,255,255,.25) 40%, transparent 42%),
+                        radial-gradient(1.2px 1.2px at 35% 80%, rgba(255,255,255,.25) 40%, transparent 42%),
+                        radial-gradient(1.4px 1.4px at 55% 50%, rgba(255,255,255,.18) 40%, transparent 42%);
+      animation: twinkle 8s ease-in-out infinite;
+    }
+    @keyframes twinkle {
+      0%,100% { opacity: .55; }
+      50% { opacity: .9; }
+    }
+
+    header {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 28px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px; text-decoration:none; color: var(--text);
+    }
+    .brand .logo {
+      width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, var(--bg1), var(--bg2)); box-shadow: var(--shadow);
+      display:grid; place-items:center; font-weight:700; letter-spacing:.5px;
+    }
+    .nav a {
+      color: var(--muted); text-decoration: none; margin-left: 18px; font-weight: 500; opacity: .9;
+    }
+    .nav a:hover { color: #fff; }
+
+    .hero {
+      width: min(1100px, 92%);
+      margin: clamp(18px, 4vw, 40px) auto 40px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: clamp(20px, 5vw, 48px);
+      align-items: center;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.16), rgba(255,255,255,.06));
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: clamp(18px, 4vw, 34px);
+    }
+    .hero .card { position: relative; overflow: hidden; }
+
+    h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1.1;
+      margin: 0 0 12px;
+    }
+    .subtitle {
+      font-size: clamp(14px, 2.2vw, 18px);
+      color: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .cta {
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    .btn {
+      appearance: none; border: 0; cursor: pointer; text-decoration: none; color: #0a0f1f;
+      background: linear-gradient(135deg, var(--accent), #a6ffe7);
+      padding: 12px 18px; border-radius: 14px; font-weight: 700; letter-spacing: .3px; box-shadow: 0 10px 24px rgba(0,255,208,.25);
+      transition: transform .18s ease, box-shadow .18s ease, filter .2s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(0,255,208,.32); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-ghost {
+      background: transparent; color: var(--text); border: 1px solid var(--border); padding: 11px 16px; font-weight: 600; border-radius: 12px;
+      box-shadow: inset 0 -60px 60px rgba(255,255,255,.03);
+    }
+    .btn-ghost:hover { filter: brightness(1.15); }
+
+    .avatar {
+      width: min(320px, 80%);
+      aspect-ratio: 1/1; margin: 0 auto; border-radius: 28px;
+      background: conic-gradient(from 180deg at 50% 50%, var(--bg1), var(--bg2), var(--bg3), var(--bg1));
+      padding: 8px;
+    }
+    .avatar-inner {
+      width: 100%; height: 100%; border-radius: 22px; background: rgba(0,0,0,.65);
+      display:grid; place-items:center;
+      position: relative; overflow: hidden;
+    }
+    .avatar-inner::before {
+      content: ""; position: absolute; inset: 0; background:
+        radial-gradient(60% 60% at 50% 40%, rgba(0, 212, 255,.18), transparent 60%),
+        radial-gradient(60% 60% at 40% 70%, rgba(255, 91, 132,.18), transparent 60%);
+      filter: blur(10px);
+      animation: pulse 6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { transform: scale(1); opacity: .8; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+    .avatar-initials { font-size: clamp(42px, 6vw, 64px); font-weight: 700; letter-spacing: 2px; color: #e9f9ff; z-index: 1; }
+
+    section {
+      width: min(1100px, 92%);
+      margin: 40px auto 80px;
+    }
+    .section-title { font-size: clamp(20px, 3.2vw, 28px); margin-bottom: 16px; }
+    .grid {
+      display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    .project-card { position: relative; overflow: hidden; }
+    .project-card h3 { margin: 0 0 8px; font-size: 18px; }
+    .project-card p { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+    .project-badge {
+      position: absolute; top: 14px; right: 14px; font-size: 12px; padding: 6px 10px; border-radius: 999px;
+      background: rgba(166,255,231,.18); color: #caffef; border: 1px solid rgba(166,255,231,.35);
+    }
+
+    footer {
+      color: var(--muted); text-align: center; padding: 36px 0 56px;
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Accessibility: respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .blob, .blob2, .blob3, .stars, .avatar-inner::before { animation: none !important; }
+      html { scroll-behavior: auto; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="animated-bg"></div>
+  <div class="blob"></div>
+  <div class="blob2"></div>
+  <div class="blob3"></div>
+  <div class="stars"></div>
+
+  <header>
+    <a href="#top" class="brand" aria-label="Homepage">
+      <div class="logo">⚡</div>
+      <strong>My Profile</strong>
+    </a>
+    <nav class="nav" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top" class="hero">
+    <div class="card">
+      <h1>Hi, I'm <span style="background: linear-gradient(90deg, var(--bg2), var(--bg3)); -webkit-background-clip: text; background-clip: text; color: transparent;"> KATAKAM PRIYA</span> 👋</h1>
+      <p class="subtitle">Front‑End Developer • UI/UX Enthusiast • Open‑source tinkerer</p>
+      <div class="cta">
+        <!-- 👇 Project button requested -->
+        <a class="btn" href="project.html" aria-label="Jump to projects">View Projects</a>
+        <a class="btn-ghost" href="#contact" aria-label="Jump to contact">Contact Me</a>
+      </div>
+    </div>
+
+    <div class="avatar">
+      <div class="avatar-inner">
+        <div class="avatar-initials" aria-hidden="true">YN</div>
+      </div>
+    </div>
+  </main>
+
+  <section id="about">
+    <h2 class="section-title">About</h2>
+    <div class="card">
+      <p style="margin:0; line-height:1.7;">
+        I craft delightful, accessible web experiences with clean code and playful details. I love
+        design systems, performance, and making pixels dance. Currently exploring Web Animations API,
+        Three.js, and advanced CSS.
+      </p>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2 class="section-title">Projects</h2>
+    <div class="grid">
+      <article class="card project-card">
+        <span class="project-badge">Featured</span>
+        <h3>Neon Portfolio</h3>
+        <p>Animated glassmorphism portfolio template with theme toggling and lazy‑loaded images.</p>
+        <a class="btn" href="#" onclick="alert('Demo link goes here!'); return false;" aria-label="Open Neon Portfolio demo">Live Demo</a>
+      </article>
+
+      <article class="card project-card">
+        <h3>TaskFlow</h3>
+        <p>Keyboard‑first task manager with offline storage and quick‑add commands.</p>
+        <a class="btn-ghost" href="#" onclick="alert('Repo link goes here!'); return false;" aria-label="Open TaskFlow source code">Source Code</a>
+      </article>
+
+      <article class="card project-card">
+        <h3>ColorSmith</h3>
+        <p>AI‑assisted palette generator that exports tokens for popular design systems.</p>
+        <a class="btn-ghost" href="#" onclick="alert('Case study link goes here!'); return false;" aria-label="Open ColorSmith case study">Case Study</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2 class="section-title">Contact</h2>
+    <div class="card">
+      <p style="margin: 0 0 16px;">Want to collaborate or just say hi? Drop a message:</p>
+      <form onsubmit="event.preventDefault(); alert('Thanks! This demo doesn\'t send yet.');" aria-label="Contact form">
+        <div style="display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <label>
+            <span class="sr-only">Your name</span>
+            <input required placeholder="Your name" aria-label="Your name" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);" />
+          </label>
+          <label>
+            <span class="sr-only">Email</span>
+            <input type="email" required placeholder="Email" aria-label="Email" style="width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);" />
+          </label>
+        </div>
+        <textarea required placeholder="Your message" aria-label="Your message" rows="4" style="margin-top:12px; width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--border); background: rgba(255,255,255,.06); color:var(--text);"></textarea>
+        <div style="margin-top:12px; display:flex; gap:10px;">
+          <button class="btn" type="submit">Send Message</button>
+          <button class="btn-ghost" type="reset">Reset</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Your Name • Built with HTML & CSS
+  </footer>
+
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
 </html>
